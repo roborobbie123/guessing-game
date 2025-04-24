@@ -1,19 +1,28 @@
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, ImageBackground } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import StartGameScreen from "@/screens/StartGameScreen";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Index() {
   return (
-    <View style={styles.container}>
-      <StartGameScreen />
-    </View>
+    <LinearGradient colors={["#4e0329", "#ddb52f"]} style={styles.root}>
+      <ImageBackground
+        source={require("../assets/images/dices.jpg")}
+        resizeMode="cover"
+        style={styles.root}
+        imageStyle={styles.backgroundImage}
+      >
+        <StartGameScreen />
+      </ImageBackground>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
-    backgroundColor: "#fff",
-    
+  },
+  backgroundImage: {
+    opacity: 0.15,
   },
 });
