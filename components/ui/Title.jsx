@@ -8,11 +8,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#ddb52f",
+    color: "white",
     borderWidth: 2,
-    borderColor: "#ddb52f",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    borderColor: "white",
+    paddingHorizontal: 50,
+    paddingVertical: 15,
     marginBottom: 10,
   },
 });

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, Alert, FlatList } from "react-native";
 import { useState } from "react";
 import SecondaryButton from "../components/game/SecondaryButton";
 import Title from "../components/ui/Title";
@@ -14,50 +14,93 @@ const generateRandomBetween = (min, max, exclude) => {
   }
 };
 
+let minBoundary = 1;
+let maxBoundary = 100;
+let id = 1;
+
 const GameScreen = ({ userNumber, numberHandler }) => {
-  const initialGuess = generateRandomBetween(1, 100, userNumber);
+  const initialGuess = generateRandomBetween(
+    minBoundary,
+    maxBoundary,
+    userNumber
+  );
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
-  const [guessList, setGuessList] = useState();
+  const [gameWon, setGameWon] = useState(false);
+  const [guessList, setGuessList] = useState([{ num: currentGuess, id: id }]);
 
-  const guessHigherHandler = (userNumber) => {
-    if (userNumber === targetNumber) {
-      console.log("correct");
-    } else if (userNumber > targetNumber) {
-      console.log("correct guess, it is higher");
-    } else if (userNumber < targetNumber) {
-      console.log("incorrect guess");
+  const nextGuessHandler = (direction) => {
+    if (
+      (direction === "lower" && currentGuess < userNumber) ||
+      (direction === "greater" && currentGuess > userNumber)
+    ) {
+      Alert.alert("Don't lie!", "You know that this is wrong...", {
+        text: "sorry",
+        style: "cancel",
+      });
+      return;
     }
-  };
-
-  const guessLowerHandler = (userNumber) => {
-    if (userNumber === targetNumber) {
-      console.log("correct");
-    } else if (userNumber < targetNumber) {
-      console.log("correct guess, it is lower");
-    } else if (userNumber > targetNumber) {
-      console.log("incorrect guess");
+    if (direction === "lower") {
+      maxBoundary = currentGuess;
+    } else if (direction === "greater") {
+      minBoundary = currentGuess;
     }
+    const newRndNum = generateRandomBetween(
+      minBoundary,
+      maxBoundary,
+      currentGuess
+    );
+    if (newRndNum === userNumber) {
+      setCurrentGuess(newRndNum);
+      setGameWon(true);
+      return;
+    }
+    setCurrentGuess(newRndNum);
+    id += 1;
+    setGuessList((prevGuesses) => [{ num: newRndNum, id: id }, ...prevGuesses]);
   };
 
   return (
     <View style={styles.mainContainer}>
       <Title>Opponent's Guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
-      <View>
-        <Text>Higher or lower?</Text>
-        <View style={styles.buttonsContainer}>
-          <View style={styles.button}>
-            <SecondaryButton handleClick={guessLowerHandler}>-</SecondaryButton>
-          </View>
-          <View style={styles.button}>
-            <SecondaryButton handleClick={guessHigherHandler}>
-              +
-            </SecondaryButton>
+      {gameWon ? (
+        <View>
+          <Title>GAME WON!</Title>
+        </View>
+      ) : (
+        <View>
+          <Text>Lower or Higher?</Text>
+          <View style={styles.buttonsContainer}>
+            <View style={styles.button}>
+              <SecondaryButton
+                handleClick={nextGuessHandler.bind(this, "lower")}
+              >
+                -
+              </SecondaryButton>
+            </View>
+            <View style={styles.button}>
+              <SecondaryButton
+                handleClick={nextGuessHandler.bind(this, "greater")}
+              >
+                +
+              </SecondaryButton>
+            </View>
           </View>
         </View>
+      )}
+
+      <View style={styles.listContainer}>
+        <FlatList
+          data={guessList}
+          renderItem={({ item }) => (
+            <View style={styles.list}>
+              <Text style={styles.listText}>#{item.id}</Text>
+              <Text style={styles.listText}>{item.num}</Text>
+            </View>
+          )}
+        />
       </View>
-      <View></View>
-      <Button title="cancel" onPress={() => numberHandler("")} />
+      <Button title="Return" onPress={() => numberHandler("")} />
     </View>
   );
 };
@@ -71,6 +114,23 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "center",
+  },
+  listContainer: {
+    width: 200,
+    height: 300,
+  },
+  list: {
+    marginTop: 15,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+ 
+  listText: {
+    flex: 1,
+    color: "white",
+    fontSize: 20,
+    textAlign: 'center'
   },
 });
 
