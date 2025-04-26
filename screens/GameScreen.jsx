@@ -1,8 +1,11 @@
 import { StyleSheet, Text, View, Button, Alert, FlatList } from "react-native";
 import { useState, useEffect, useRef } from "react";
+import { Ionicons } from "@expo/vector-icons";
+
 import SecondaryButton from "../components/game/SecondaryButton";
 import Title from "../components/ui/Title";
 import NumberContainer from "../components/game/NumberContainer";
+import Card from "../components/ui/Card";
 
 const generateRandomBetween = (min, max, exclude) => {
   const randomNum = Math.floor(Math.random() * (max - min) + min);
@@ -14,7 +17,7 @@ const generateRandomBetween = (min, max, exclude) => {
   }
 };
 
-const GameScreen = ({ userNumber, setGameOver, numberPicker }) => {
+const GameScreen = ({ userNumber, setGameOver, numberPicker, setTurn }) => {
   const minBoundary = useRef(0);
   const maxBoundary = useRef(100);
   const id = useRef(1);
@@ -63,6 +66,7 @@ const GameScreen = ({ userNumber, setGameOver, numberPicker }) => {
     }
     setCurrentGuess(newRndNum);
     id.current += 1;
+    setTurn(id.current);
     setGuessList((prevGuesses) => [
       { num: newRndNum, id: id.current },
       ...prevGuesses,
@@ -77,25 +81,29 @@ const GameScreen = ({ userNumber, setGameOver, numberPicker }) => {
   return (
     <View style={styles.mainContainer}>
       <Title>Opponent's Guess</Title>
-      <NumberContainer>{currentGuess}</NumberContainer>
+      <Card>
+        <NumberContainer>{currentGuess}</NumberContainer>
 
-      <View>
-        <Text>Lower or Higher?</Text>
-        <View style={styles.buttonsContainer}>
-          <View style={styles.button}>
-            <SecondaryButton handleClick={nextGuessHandler.bind(this, "lower")}>
-              -
-            </SecondaryButton>
-          </View>
-          <View style={styles.button}>
-            <SecondaryButton
-              handleClick={nextGuessHandler.bind(this, "greater")}
-            >
-              +
-            </SecondaryButton>
+        <View>
+          <Text style={styles.instructionText}>Lower or Higher?</Text>
+          <View style={styles.buttonsContainer}>
+            <View style={styles.button}>
+              <SecondaryButton
+                handleClick={nextGuessHandler.bind(this, "lower")}
+              >
+                -
+              </SecondaryButton>
+            </View>
+            <View style={styles.button}>
+              <SecondaryButton
+                handleClick={nextGuessHandler.bind(this, "greater")}
+              >
+                +
+              </SecondaryButton>
+            </View>
           </View>
         </View>
-      </View>
+      </Card>
 
       <View style={styles.listContainer}>
         <FlatList
@@ -120,12 +128,13 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   buttonsContainer: {
+    marginTop: 20,
     flexDirection: "row",
     justifyContent: "center",
   },
   listContainer: {
     width: 200,
-    height: 300,
+    height: 225,
     marginBottom: 50,
   },
   list: {
@@ -139,6 +148,10 @@ const styles = StyleSheet.create({
     flex: 1,
     color: "white",
     fontSize: 20,
+    textAlign: "center",
+  },
+  instructionText: {
+    color: "#ddb52f",
     textAlign: "center",
   },
 });

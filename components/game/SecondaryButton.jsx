@@ -19,21 +19,26 @@ const SecondaryButton = ({ children, handleClick }) => {
 
 const styles = StyleSheet.create({
   buttonOuterContainer: {
-    borderRadius: 28,
+    borderRadius: 100,
+    height: 50,
+    width: 75,
     margin: 5,
     overflow: "hidden",
     shadowOpacity: 0.25,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 2,
     shadowColor: "black",
+    justifyContent: "center",
+    alignContent: "center",
   },
   buttonInnerContainer: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+    flex: 1,
     backgroundColor: "#72063c",
+    justifyContent: "center",
+    alignContent: "center",
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 40,
     textAlign: "center",
     color: "white",
   },

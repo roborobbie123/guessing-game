@@ -11,6 +11,7 @@ import StartGameScreen from "@/screens/StartGameScreen";
 import GameScreen from "@/screens/GameScreen";
 import GameOverScreen from "@/screens/GameOverScreen";
 import { LinearGradient } from "expo-linear-gradient";
+import { useFonts } from "expo-font";
 
 export default function Index() {
   const [userNumber, setUserNumber] = useState();
@@ -18,6 +19,7 @@ export default function Index() {
     won: false,
     home: true,
   });
+  const [turnCount, setTurnCount] = useState();
 
   function pickedNumberHandler(pickedNumber) {
     setUserNumber(pickedNumber);
@@ -32,12 +34,24 @@ export default function Index() {
         imageStyle={styles.backgroundImage}
       >
         <SafeAreaView style={styles.root}>
-          {gameOver.won && <GameOverScreen userNumber={userNumber} setGameOver={setGameOver} numberPicker={pickedNumberHandler}/>}
-          {userNumber && !gameOver.won && (
-            <GameScreen userNumber={userNumber} setGameOver={setGameOver} numberPicker={pickedNumberHandler} />
+          {gameOver.won && (
+            <GameOverScreen
+              userNumber={userNumber}
+              setGameOver={setGameOver}
+              numberPicker={pickedNumberHandler}
+              turnCount={turnCount}
+            />
           )}
-          ;
-          {(!userNumber && !gameOver.won && gameOver.home) && (
+          {userNumber && !gameOver.won && (
+            <GameScreen
+              userNumber={userNumber}
+              setGameOver={setGameOver}
+              numberPicker={pickedNumberHandler}
+              setTurn={setTurnCount}
+            />
+          )}
+          set ;
+          {!userNumber && !gameOver.won && gameOver.home && (
             <StartGameScreen numberHandler={pickedNumberHandler} />
           )}
         </SafeAreaView>
