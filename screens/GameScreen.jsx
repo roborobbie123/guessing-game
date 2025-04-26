@@ -109,9 +109,9 @@ const GameScreen = ({ userNumber, setGameOver, numberPicker, setTurn }) => {
         <FlatList
           data={guessList}
           renderItem={({ item }) => (
-            <View style={styles.list}>
+            <View style={styles.listItem}>
               <Text style={styles.listText}>#{item.id}</Text>
-              <Text style={styles.listText}>{item.num}</Text>
+              <Text style={styles.listText}>Opponent's Guess: {item.num}</Text>
             </View>
           )}
         />
@@ -133,26 +133,41 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   listContainer: {
-    width: 200,
+    width: "100%",
     height: 225,
     marginBottom: 50,
   },
-  list: {
+  listItem: {
     marginTop: 15,
+    marginHorizontal: 20,
     flexDirection: "row",
-    justifyContent: "center",
-    alignContent: "center",
+    justifyContent: "space-between",
+    borderRadius: 24,
+    borderColor: "#3c0320",
+    padding: 5,
+    paddingLeft: 20,
+    backgroundColor: "#ddb52f",
+    shadowRadius: 5,
+    shadowOpacity: 0.75,
+    shadowOffset: { width: 0, height: 5 },
   },
 
   listText: {
     flex: 1,
-    color: "white",
-    fontSize: 20,
-    textAlign: "center",
+    color: "#3c0320",
+    fontSize: 12,
+    fontWeight: "600",
   },
   instructionText: {
     color: "#ddb52f",
     textAlign: "center",
+  },
+  header: {
+    marginLeft: 45,
+    flexDirection: "row",
+    gap: 50,
+    borderWidth: 1,
+    width: "100%",
   },
 });
 

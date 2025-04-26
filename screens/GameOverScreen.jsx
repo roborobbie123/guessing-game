@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text, Button, Image } from "react-native";
 import Title from "@/components/ui/Title";
 import Card from "@/components/ui/Card";
+import PrimaryButton from "@/components/ui/PrimaryButton";
 
 export default function GameOverScreen({
   userNumber,
@@ -30,10 +31,8 @@ export default function GameOverScreen({
             <Text style={styles.bold}>{userNumber}</Text>.
           </Text>
         </View>
+        <PrimaryButton handleClick={() => resetGame()}>Start New Game</PrimaryButton>
       </Card>
-      <View style={styles.button}>
-        <Button title="Reset Game" onPress={() => resetGame()} />
-      </View>
     </View>
   );
 }
@@ -64,11 +63,8 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     fontSize: 24,
   },
-  button: {
-    marginTop: 50,
-  },
   bold: {
     fontWeight: "bold",
-    color: "#e1c25b"
+    color: "#e1c25b",
   },
 });
